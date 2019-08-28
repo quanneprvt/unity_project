@@ -12,10 +12,11 @@ public class PlayerMovement : MonoBehaviour
     bool isJump = false;
     bool isCrouch = false;
     //
+    private Vector3 savedStat;
     // Start is called before the first frame update
     void Start()
     {
-        
+        savedStat = transform.position;
     }
 
     // Update is called once per frame
@@ -38,5 +39,19 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(hMove * Time.fixedDeltaTime, isCrouch, isJump);
         if (isJump)
             isJump = false;
+    }
+
+    void Reset()
+    {
+        transform.position = savedStat;
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        // Debug.Log(col.gameObject.name);
+        if (col.gameObject.tag == "dead")
+        {
+            this.Reset();
+        }
     }
 }
