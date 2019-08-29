@@ -60,6 +60,15 @@ public class CharacterController : MonoBehaviour
 		}
 	}
 
+	public Rigidbody2D GetRigid()
+	{
+		return m_Rigidbody2D;
+	}
+
+	public bool IsLanded()
+	{
+		return m_Grounded;
+	}
 
 	public void Move(float move, bool crouch, bool jump)
 	{
@@ -124,7 +133,7 @@ public class CharacterController : MonoBehaviour
 			}
 		}
 		// If the player should jump...
-		if (m_Grounded && jump)
+		if (jump)
 		{
 			// Add a vertical force to the player.
 			m_Grounded = false;
