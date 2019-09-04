@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BezierCurve : MonoBehaviour
+public class GraphicMath : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -18,14 +18,14 @@ public class BezierCurve : MonoBehaviour
         
     }
 
-    public Vector2? ToPoint(float t, Vector2[] array, int i1 = 0, int i2 = 0)
+    public Vector2 BezierToPoint(float t, Vector2[] array, int i1 = 0, int i2 = 0)
     {
         if (i2 == 0)
             i2 = array.Length - 1;
         int length = i2 - i1 + 1;
         if(length > 2)
         {
-            return (1 - t)*ToPoint(t, array, i1, i2-1) + t*ToPoint(t, array, i1+1, i2);
+            return (1 - t)*BezierToPoint(t, array, i1, i2-1) + t*BezierToPoint(t, array, i1+1, i2);
         }
         else if(length >= 2)
         {
@@ -37,7 +37,7 @@ public class BezierCurve : MonoBehaviour
         }
         else
         {
-            return null;
+            return new Vector2(0,0);
         }
     }
 }
