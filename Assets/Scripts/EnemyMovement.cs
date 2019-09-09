@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     private Rigidbody2D m_RigidBody;
-    private GameObject m_path;
+    private PathMgr m_PathMgr;
+    private float m_DeltaX = 0f, m_DeltaY = 0f;
     //
     bool isGrounded = false;
     //

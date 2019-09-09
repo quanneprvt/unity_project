@@ -1,43 +1,57 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿
 
-public class GraphicMath : MonoBehaviour
+namespace Graphic.Math
 {
-    // Start is called before the first frame update
-    void Start()
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+    public static class GraphicMath
     {
-        // for (float i = 0; i<=1; i+= 0.25f)
-        //     Debug.Log(Bezier(i, new Vector2[] {new Vector2(0,0),new Vector2(100,100)}));
-    }
+        // Start is called before the first frame update
+        static void Start()
+        {
+            // for (float i = 0; i<=1; i+= 0.25f)
+            //     Debug.Log(Bezier(i, new Vector2[] {new Vector2(0,0),new Vector2(100,100)}));
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        public static double Angle2Point(Vector2 p1, Vector2 p2)
+        {
+            float xDiff = p2.x - p1.x;
+            float yDiff = p2.y - p1.y;
+            return Math.Atan2(yDiff, xDiff);
+        }
 
-    public Vector2 BezierToPoint(float t, Vector2[] array, int i1 = 0, int i2 = 0)
-    {
-        if (i2 == 0)
-            i2 = array.Length - 1;
-        int length = i2 - i1 + 1;
-        if(length > 2)
+        public static Vector2 MoveToPoint(float dt, Vector2 f, Vector2 t)
         {
-            return (1 - t)*BezierToPoint(t, array, i1, i2-1) + t*BezierToPoint(t, array, i1+1, i2);
+            Vector2 temp = new Vector2(0,0);
+            double a = Angle2Point(f, t);
+            temp.x = (float)(f.x + dt*t.x*Math.Cos(a));
+            temp.y = (float)(f.y + dt*t.y*Math.Sin(a));
+            return temp;
         }
-        else if(length >= 2)
+
+        public static Vector2 BezierToPoint(float t, Vector2[] array, int i1 = 0, int i2 = 0)
         {
-            return (1 - t)*array[i1] + t*array[i2];
-        }
-        else if(length >= 1)
-        {
-            return array[i1];
-        }
-        else
-        {
-            return new Vector2(0,0);
+            if (i2 == 0)
+                i2 = array.Length - 1;
+            int length = i2 - i1 + 1;
+            if(length > 2)
+            {
+                return (1 - t)*BezierToPoint(t, array, i1, i2-1) + t*BezierToPoint(t, array, i1+1, i2);
+            }
+            else if(length >= 2)
+            {
+                return (1 - t)*array[i1] + t*array[i2];
+            }
+            else if(length >= 1)
+            {
+                return array[i1];
+            }
+            else
+            {
+                return new Vector2(0,0);
+            }
         }
     }
 }
