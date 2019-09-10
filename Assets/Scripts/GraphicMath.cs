@@ -26,9 +26,12 @@ namespace Graphic.Math
         {
             Vector2 temp = new Vector2(0,0);
             double a = Angle2Point(f, t);
-            temp.x = (float)(f.x + dt*t.x*Math.Cos(a));
-            temp.y = (float)(f.y + dt*t.y*Math.Sin(a));
-            return temp;
+            temp.x = (float)(f.x + dt*Math.Cos(a));
+            temp.y = (float)(f.y + dt*Math.Sin(a));
+            // Debug.Log(temp.x/f.x);
+            if (temp.x/t.x >=1)
+                return t;
+            else return temp;
         }
 
         public static Vector2 BezierToPoint(float t, Vector2[] array, int i1 = 0, int i2 = 0)

@@ -830,6 +830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e092fbae34cae80438e6333c21383f27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_PathMgr: {fileID: 418400730}
 --- !u!114 &418400730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -842,7 +843,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73f85338cc54f8044979444ac2ce1e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Math: {fileID: 0}
   m_Paths:
   - {fileID: 1542618891}
   - {fileID: 2139540983}
@@ -3113,7 +3113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b61bd8f8d78f744dba1ea369c916664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Math: {fileID: 0}
   points:
   - {fileID: 1477269115}
   - {fileID: 2121748999}
@@ -4418,7 +4417,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b61bd8f8d78f744dba1ea369c916664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Math: {fileID: 0}
   points:
   - {fileID: 576798002}
   - {fileID: 693656306}

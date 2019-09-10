@@ -5,11 +5,11 @@ using Graphic.Math;
 public class Path : MonoBehaviour
 {
     // [SerializeField] private GraphicMath m_Math;
+    public bool isUseBezier = false;
     [SerializeField] private GameObject[] points;
     //
     private Vector2 m_drawPos;
     private Vector2[] m_controlPoints;
-    public bool isUseBezier = false;
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
@@ -69,8 +69,9 @@ public class Path : MonoBehaviour
             }
             else
             {
-                if (m_controlPoints.Length == 2)
-                    Gizmos.DrawLine(m_controlPoints[0], m_controlPoints[1]);
+                if (m_controlPoints.Length >= 2)
+                    for (int i = 0; i< m_controlPoints.Length - 1; i++)
+                        Gizmos.DrawLine(m_controlPoints[i], m_controlPoints[i + 1]);
             }
         }
     }
