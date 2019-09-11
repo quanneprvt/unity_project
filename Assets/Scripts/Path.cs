@@ -6,10 +6,14 @@ public class Path : MonoBehaviour
 {
     // [SerializeField] private GraphicMath m_Math;
     public bool isUseBezier = false;
+    public bool isLoop = false;
+    [ConditionalField("isLoop", true)] [SerializeField] private int m_LoopFrom;
+    [ConditionalField("isLoop", true)] [SerializeField] private int m_LoopTo;
     [SerializeField] private GameObject[] points;
     //
     private Vector2 m_drawPos;
     private Vector2[] m_controlPoints;
+    private Vector2[] m_LoopPath;
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
@@ -24,6 +28,8 @@ public class Path : MonoBehaviour
                     m_controlPoints[i] = points[i].transform.position;
             }
         }
+        m_LoopPath = m_controlPoints.SubArray(m_LoopFrom, m_LoopTo - m_LoopFrom + 1);
+        // Debug.Log(m_LoopPath.Length);
     }
 
     /// <summary>
@@ -39,6 +45,11 @@ public class Path : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public Vector2[] GetLoopRoute()
+    {
+        return m_LoopPath;
     }
 
     public Vector2[] GetRoute()

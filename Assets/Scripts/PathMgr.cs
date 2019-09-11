@@ -10,15 +10,18 @@ public class PathMgr : MonoBehaviour
     private Path m_CurrentPath;
     private Vector2 m_CurrentPoint;
     private Vector2 m_NextPoint;
+    private Vector2[] m_LoopPath;
     [HideInInspector] public bool isCompletePath = false;
     bool isMoveComplete = false;
     float tempDelta = 0f;
+    Vector2[] route;
     // Start is called before the first frame update
     void Start()
     {
         m_CurrentPath = m_Paths[0];
-        m_CurrentPoint = !m_CurrentPath.isUseBezier ? m_CurrentPath.GetRoute()[0] : new Vector2();
-        m_NextPoint = !m_CurrentPath.isUseBezier ? m_CurrentPath.GetRoute()[1] : new Vector2();
+        route = m_CurrentPath.GetRoute();
+        m_CurrentPoint = !m_CurrentPath.isUseBezier ? route[0] : new Vector2();
+        m_NextPoint = !m_CurrentPath.isUseBezier ? route[1] : new Vector2();
     }
 
     // Update is called once per frame
@@ -37,14 +40,14 @@ public class PathMgr : MonoBehaviour
             }
             else
             {
-                int index = Array.IndexOf(m_CurrentPath.GetRoute(), m_NextPoint) + 1;
-                if (index >= m_CurrentPath.GetRoute().Length)
+                int index = Array.IndexOf(route, m_NextPoint) + 1;
+                if (index >= route.Length)
                     _NextPath();
                 else
                 {
                     isCompletePath = false;
                     m_CurrentPoint = m_NextPoint;
-                    m_NextPoint = m_CurrentPath.GetRoute()[index];
+                    m_NextPoint = route[index];
                 }
             }
         }
@@ -84,7 +87,7 @@ public class PathMgr : MonoBehaviour
     private void _NextPath()
     {
         int index = Array.IndexOf(m_Paths, m_CurrentPath) + 1;
-        if (index >= m_Paths.Length)
+        if (index >= m_Paths.Length && !m_CurrentPath.isLoop)
         {
             isMoveComplete = true;
             return;
@@ -92,9 +95,19 @@ public class PathMgr : MonoBehaviour
         else
         {
             isCompletePath = false;
-            m_CurrentPath = m_Paths[index];
-            m_CurrentPoint = !m_CurrentPath.isUseBezier ? m_CurrentPath.GetRoute()[0] : new Vector2();
-            m_NextPoint = !m_CurrentPath.isUseBezier ? m_CurrentPath.GetRoute()[1] : new Vector2();
+            m_CurrentPath = (!m_CurrentPath.isLoop) ? m_Paths[index] : m_CurrentPath;
+            if (m_CurrentPath.isLoop)
+            {
+                route = m_CurrentPath.GetLoopRoute();
+                Array.Reverse(route);
+                Debug.Log("reverse");
+            }
+            else
+            {
+                route = m_CurrentPath.GetRoute();
+            }
+            m_CurrentPoint = !m_CurrentPath.isUseBezier ? route[0] : new Vector2();
+            m_NextPoint = !m_CurrentPath.isUseBezier ? route[1] : new Vector2();
         }
     }
 }

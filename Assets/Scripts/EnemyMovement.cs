@@ -7,6 +7,7 @@ public class EnemyMovement : MonoBehaviour
 {
     private Rigidbody2D m_RigidBody;
     [SerializeField] private PathMgr m_PathMgr;
+    [SerializeField] private float m_MoveSpeed = 0f;
     private float m_DeltaX = 0f, m_DeltaY = 0f;
     private float m_Delta = 0f;
     private Vector2 m_Destination;
@@ -48,7 +49,7 @@ public class EnemyMovement : MonoBehaviour
         {
             if (isGrounded)
                 // m_DeltaX = Math.Min(1, m_DeltaX += dt);
-                m_DeltaX += 5*dt;
+                m_DeltaX += m_MoveSpeed*dt;
         }
         else
             if (m_RigidBody.gravityScale == 0)
