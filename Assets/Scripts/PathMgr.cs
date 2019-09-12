@@ -12,12 +12,14 @@ public class PathMgr : MonoBehaviour
     private Vector2 m_NextPoint;
     private Vector2[] m_LoopPath;
     [HideInInspector] public bool isCompletePath = false;
-    bool isMoveComplete = false;
-    float tempDelta = 0f;
-    Vector2[] route;
+    [HideInInspector] public bool isMoveComplete = false;
+    [HideInInspector] public float tempDelta = 0f;
+    [HideInInspector] public Vector2[] route;
     // Start is called before the first frame update
     void Start()
     {
+        foreach (Path p in m_Paths)
+            p.Init();
         m_CurrentPath = m_Paths[0];
         route = m_CurrentPath.GetRoute();
         m_CurrentPoint = !m_CurrentPath.isUseBezier ? route[0] : new Vector2();
@@ -58,6 +60,7 @@ public class PathMgr : MonoBehaviour
         tempDelta = dt;
         if (!isMoveComplete)
         {
+            Debug.Log("false");
             if (m_CurrentPath.isUseBezier)
                 return GraphicMath.BezierToPoint(dt, m_CurrentPath.GetRoute());
             else
@@ -65,22 +68,33 @@ public class PathMgr : MonoBehaviour
         } 
         else
         {
+            // Debug.Log(dt);
+            // Debug.Log("complete");
             return m_Paths[m_Paths.Length - 1].GetRoute()[m_Paths[m_Paths.Length - 1].GetRoute().Length-1];
         }
     }
 
     private void _UpdateComplete()
     {
-        if (m_CurrentPath.isUseBezier)
+        if (!isCompletePath)
         {
-            if (GraphicMath.BezierToPoint(tempDelta, m_CurrentPath.GetRoute()) == m_CurrentPath.GetRoute()[m_CurrentPath.GetRoute().Length - 1])
-                isCompletePath = true;
-        }
-        else
-        {
-            if (GraphicMath.MoveToPoint(tempDelta, m_CurrentPoint, m_NextPoint) == m_NextPoint)
-            // && m_NextPoint == m_CurrentPath.GetRoute()[m_CurrentPath.GetRoute().Length - 1])
-                isCompletePath = true;
+            if (m_CurrentPath.isUseBezier)
+            {
+                if (GraphicMath.BezierToPoint(tempDelta, m_CurrentPath.GetRoute()) == m_CurrentPath.GetRoute()[m_CurrentPath.GetRoute().Length - 1])
+                    isCompletePath = true;
+            }
+            else
+            {
+                // Debug.Log(tempDelta);
+                Debug.Log(m_CurrentPoint);
+                Debug.Log(m_NextPoint);
+                // Debug.Log(GraphicMath.MoveToPoint(tempDelta, m_CurrentPoint, m_NextPoint));
+                if (GraphicMath.MoveToPoint(tempDelta, m_CurrentPoint, m_NextPoint) == m_NextPoint)
+                // && m_NextPoint == m_CurrentPath.GetRoute()[m_CurrentPath.GetRoute().Length - 1])
+                {
+                    isCompletePath = true;
+                }
+            }
         }
     }
 
@@ -100,6 +114,7 @@ public class PathMgr : MonoBehaviour
             {
                 route = m_CurrentPath.GetLoopRoute();
                 Array.Reverse(route);
+                // Debug.Log(route);
                 Debug.Log("reverse");
             }
             else

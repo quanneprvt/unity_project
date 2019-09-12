@@ -9,6 +9,7 @@ namespace Graphic.Math
     public static class GraphicMath
     {
         // Start is called before the first frame update
+        private static bool m_DebugFrame = false;
         static void Start()
         {
             // for (float i = 0; i<=1; i+= 0.25f)
@@ -28,8 +29,13 @@ namespace Graphic.Math
             double a = Angle2Point(f, t);
             temp.x = (float)(f.x + dt*Math.Cos(a));
             temp.y = (float)(f.y + dt*Math.Sin(a));
-            // Debug.Log(temp.x/f.x);
-            if (temp.x/t.x >=1)
+            if (m_DebugFrame)
+            {
+                m_DebugFrame = false;
+                Debug.Log(f.x);
+                Debug.Log(a);
+            }
+            if (temp.x/t.x > 1)
                 return t;
             else return temp;
         }

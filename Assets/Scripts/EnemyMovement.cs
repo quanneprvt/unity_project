@@ -12,7 +12,7 @@ public class EnemyMovement : MonoBehaviour
     private float m_Delta = 0f;
     private Vector2 m_Destination;
     //
-    bool isGrounded = false;
+    [HideInInspector] public bool isGrounded = false;
     //
     void Awake()
     {
@@ -22,6 +22,7 @@ public class EnemyMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // m_RigidBody = GetComponent<Rigidbody2D>();
         isGrounded = (m_RigidBody.velocity.y <= 0.2 && m_RigidBody.velocity.y >= -0.2) ? true : false;
     }
 
