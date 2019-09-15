@@ -11,9 +11,9 @@ public class Path : MonoBehaviour
     [ConditionalField("isLoop", true)] [SerializeField] private int m_LoopTo;
     [SerializeField] private GameObject[] points;
     //
-    private Vector2 m_drawPos;
-    private Vector2[] m_controlPoints;
-    private Vector2[] m_LoopPath;
+    private Vector3 m_drawPos;
+    private Vector3[] m_controlPoints;
+    private Vector3[] m_LoopPath;
 
     /// <summary>
     /// Awake is called when the script instance is being loaded.
@@ -22,14 +22,14 @@ public class Path : MonoBehaviour
     {
         if (points.Length >0)
         {
-            m_controlPoints = new Vector2[points.Length];
+            m_controlPoints = new Vector3[points.Length];
             for (int i =0; i< m_controlPoints.Length; i++)
             {
                 if (points[i])
                     m_controlPoints[i] = points[i].transform.position;
             }
         }
-        Vector2[] p;
+        Vector3[] p;
         p = m_controlPoints.SubArray(m_LoopFrom, m_LoopTo - m_LoopFrom + 1);
         m_LoopPath = (m_controlPoints.Length == p.Length) ? m_controlPoints : p;
     }
@@ -66,12 +66,12 @@ public class Path : MonoBehaviour
         // Debug.Log(m_LoopPath.Length);
     }
 
-    public Vector2[] GetLoopRoute()
+    public Vector3[] GetLoopRoute()
     {
         return m_LoopPath;
     }
 
-    public Vector2[] GetRoute()
+    public Vector3[] GetRoute()
     {
         return m_controlPoints;
     }
@@ -83,7 +83,7 @@ public class Path : MonoBehaviour
     {
         if (points.Length >0)
         {
-            m_controlPoints = new Vector2[points.Length];
+            m_controlPoints = new Vector3[points.Length];
             for (int i =0; i< m_controlPoints.Length; i++)
             {
                 if (points[i])

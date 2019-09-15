@@ -8,7 +8,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private GameObject m_Target;
     private Vector3 offset;
     private Vector3 pos;
-    float maxX = 0f;
+    float minX = 0f;
+    float maxX = 4057f;
     float maxY = 0f;
 
     // Use this for initialization
@@ -18,7 +19,8 @@ public class CameraController : MonoBehaviour
         pos =  transform.position;
         offset = transform.position - m_Target.transform.position;
         //
-        maxX = 1;
+        minX = 0.75f;
+        maxX = 18f;
         maxY = transform.position.y - 0.5f;
     }
 
@@ -28,7 +30,7 @@ public class CameraController : MonoBehaviour
         // offset.x = Player.transform.position.x - transform.position.x;
         //
         // pos = transform.position + 3* offset * Time.deltaTime;
-        pos.x = Math.Max(maxX, transform.position.x + 3 * (m_Target.transform.position.x - transform.position.x) * Time.deltaTime);
+        pos.x = Math.Min(maxX, Math.Max(minX, transform.position.x + 3 * (m_Target.transform.position.x - transform.position.x) * Time.deltaTime));
         pos.y = Math.Min(maxY , transform.position.y + 5 * (m_Target.transform.position.y - (transform.position.y - offset.y - 0.5f)) * Time.deltaTime);
         //
         transform.position = pos;

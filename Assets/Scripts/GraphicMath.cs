@@ -9,16 +9,19 @@
         // Start is called before the first frame update
         private static bool m_DebugFrame = false;
 
-        public static double Distance2Point(Vector2 p1, Vector2 p2)
+        public static double Distance2Point(Vector3 p1, Vector3 p2)
         {
             float x = p2.x - p1.x;
-            return Math.Sqrt(p1 - p2);
+            float y = p2.y - p1.y;
+            float z = p2.z - p1.z;
+            return Math.Sqrt(x*x + y*y + z*z);
         }
 
-        public static double Angle2Point(Vector2 p1, Vector2 p2)
+        public static double Angle2Point(Vector3 p1, Vector3 p2)
         {
             float xDiff = p2.x - p1.x;
             float yDiff = p2.y - p1.y;
+
             return Math.Atan2(yDiff, xDiff);
         }
 
@@ -39,9 +42,10 @@
         {
             Vector3 temp = new Vector3(0,0,0);
             bool isFinish = false;
-            double a = Angle2Point(f, t);
-            temp.x = (float)(f.x + dt*Math.Cos(a));
-            temp.y = (float)(f.y + dt*Math.Sin(a));
+            // double a = Angle2Point(f, t);
+            // temp.x = (float)(f.x + dt*Math.Cos(a));
+            // temp.y = (float)(f.y + dt*Math.Sin(a));
+            temp = Vector3.MoveTowards(f, t, dt);
             Vector3 d;
             d.x = Normalize(temp, t).x/Normalize(f,t).x;
             d.y = Normalize(temp, t).y/Normalize(f,t).y;

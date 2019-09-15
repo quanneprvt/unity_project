@@ -8,13 +8,13 @@ public class PathMgr : MonoBehaviour
 {
     [SerializeField] private Path[] m_Paths;
     private Path m_CurrentPath;
-    private Vector2 m_CurrentPoint;
-    private Vector2 m_NextPoint;
-    private Vector2[] m_LoopPath;
+    private Vector3 m_CurrentPoint;
+    private Vector3 m_NextPoint;
+    private Vector3[] m_LoopPath;
     [HideInInspector] public bool isCompletePath = false;
     [HideInInspector] public bool isMoveComplete = false;
     [HideInInspector] public float tempDelta = 0f;
-    [HideInInspector] public Vector2[] route;
+    [HideInInspector] public Vector3[] route;
     // Start is called before the first frame update
     void Start()
     {
@@ -64,7 +64,7 @@ public class PathMgr : MonoBehaviour
         {
             // Debug.Log("false");
             if (m_CurrentPath.isUseBezier)
-                return GraphicMath.BezierToPoint(dt, m_CurrentPath.GetRoute());
+                return GraphicMath.BezierToPoint(dt, route);
             else
                 return GraphicMath.MoveToPoint(dt, m_CurrentPoint, m_NextPoint, true, false);
         } 
@@ -83,8 +83,8 @@ public class PathMgr : MonoBehaviour
         //
         route = m_CurrentPath.GetRoute();
         //
-        m_CurrentPoint = !m_CurrentPath.isUseBezier ? route[0] : new Vector2();
-        m_NextPoint = !m_CurrentPath.isUseBezier ? route[1] : new Vector2();
+        m_CurrentPoint = !m_CurrentPath.isUseBezier ? route[0] : new Vector3();
+        m_NextPoint = !m_CurrentPath.isUseBezier ? route[1] : new Vector3();
         //
         isMoveComplete = false;
         isCompletePath = false;
@@ -96,7 +96,7 @@ public class PathMgr : MonoBehaviour
         {
             if (m_CurrentPath.isUseBezier)
             {
-                if (GraphicMath.BezierToPoint(tempDelta, m_CurrentPath.GetRoute()) == m_CurrentPath.GetRoute()[m_CurrentPath.GetRoute().Length - 1])
+                if (GraphicMath.BezierToPoint(tempDelta, route) == route[route.Length - 1])
                     isCompletePath = true;
             }
             else
@@ -133,8 +133,8 @@ public class PathMgr : MonoBehaviour
             {
                 route = m_CurrentPath.GetRoute();
             }
-            m_CurrentPoint = !m_CurrentPath.isUseBezier ? route[0] : new Vector2();
-            m_NextPoint = !m_CurrentPath.isUseBezier ? route[1] : new Vector2();
+            m_CurrentPoint = !m_CurrentPath.isUseBezier ? route[0] : new Vector3();
+            m_NextPoint = !m_CurrentPath.isUseBezier ? route[1] : new Vector3();
         }
     }
 }

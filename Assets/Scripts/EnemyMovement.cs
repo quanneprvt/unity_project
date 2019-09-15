@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Graphic.Math;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float m_MoveSpeed = 0f;
     [SerializeField] private int m_Type = 0;
     [SerializeField] private bool m_IsLoopFromBegin = false;
+    [SerializeField] private float m_JumpForce = 600f;
+    [SerializeField] private GameObject m_Target;
     private Vector3 m_Delta;
     private float m_DeltaBezier;
     private Vector2 m_Destination;
@@ -44,6 +47,19 @@ public class EnemyMovement : MonoBehaviour
         _UpdateDeltaTime(dt);
         _UpdatePosition(dt);
         _UpdateRotation(dt);
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "pipe") 
+        {
+            // Debug.Log("ignore");
+            Physics2D.IgnoreCollision(col.collider, GetComponent<BoxCollider2D>());
+        }
+        if (col.gameObject.tag == "dead" && m_Type != 2)
+        {
+            Physics2D.IgnoreCollision(col.collider, GetComponent<BoxCollider2D>());
+        }
     }
 
     private void _UpdatePath(float dt)
@@ -86,7 +102,13 @@ public class EnemyMovement : MonoBehaviour
             break;
 
             case 2:
-                Debug.Log(m_CameraMain.transform);
+                Vector3 p = m_Target.transform.position;
+                // Debug.Log(GraphicMath.Distance2Point(transform.position, p));
+                if (GraphicMath.Distance2Point(transform.position, p) <= 4 && m_RigidBody.IsSleeping())
+                {
+                    m_RigidBody.WakeUp();
+                    m_RigidBody.AddForce(new Vector3(0f, m_JumpForce, 0f));
+                }
             break;
         }
     }
@@ -100,9 +122,8 @@ public class EnemyMovement : MonoBehaviour
 
             case 1:
                 Vector3 r = transform.rotation.eulerAngles;
-                r.z += (float)(50*dt);
+                r.z += (float)(500*dt);
                 transform.rotation = Quaternion.Euler(r);
-                // m_RigidBody.MoveRotation(Quaternion.Euler(r));
             break;
         }
     }
@@ -120,7 +141,7 @@ public class EnemyMovement : MonoBehaviour
             case 1:
             if (m_IsLoopFromBegin && m_PathMgr.isMoveComplete)
             {
-                Debug.Log("reset");
+                // Debug.Log("reset");
                 m_PathMgr.ResetPoint();
             }
             else m_PathMgr.CompleteMoveHandler();
