@@ -20,10 +20,12 @@ public class PathMgr : MonoBehaviour
     {
         foreach (Path p in m_Paths)
             p.Init();
-        m_CurrentPath = m_Paths[0];
-        route = m_CurrentPath.GetRoute();
-        m_CurrentPoint = !m_CurrentPath.isUseBezier ? route[0] : new Vector2();
-        m_NextPoint = !m_CurrentPath.isUseBezier ? route[1] : new Vector2();
+        if (m_Paths.Length > 0)
+            ResetPoint();
+        else {
+            isCompletePath = true;
+            isMoveComplete = true;
+        }
     }
 
     // Update is called once per frame
@@ -60,11 +62,11 @@ public class PathMgr : MonoBehaviour
         tempDelta = dt;
         if (!isMoveComplete)
         {
-            Debug.Log("false");
+            // Debug.Log("false");
             if (m_CurrentPath.isUseBezier)
                 return GraphicMath.BezierToPoint(dt, m_CurrentPath.GetRoute());
             else
-                return GraphicMath.MoveToPoint(dt, m_CurrentPoint, m_NextPoint);
+                return GraphicMath.MoveToPoint(dt, m_CurrentPoint, m_NextPoint, true, false);
         } 
         else
         {
@@ -72,6 +74,20 @@ public class PathMgr : MonoBehaviour
             // Debug.Log("complete");
             return m_Paths[m_Paths.Length - 1].GetRoute()[m_Paths[m_Paths.Length - 1].GetRoute().Length-1];
         }
+    }
+
+    public void ResetPoint()
+    {
+
+        m_CurrentPath = m_Paths[0];
+        //
+        route = m_CurrentPath.GetRoute();
+        //
+        m_CurrentPoint = !m_CurrentPath.isUseBezier ? route[0] : new Vector2();
+        m_NextPoint = !m_CurrentPath.isUseBezier ? route[1] : new Vector2();
+        //
+        isMoveComplete = false;
+        isCompletePath = false;
     }
 
     private void _UpdateComplete()
@@ -85,11 +101,7 @@ public class PathMgr : MonoBehaviour
             }
             else
             {
-                // Debug.Log(tempDelta);
-                Debug.Log(m_CurrentPoint);
-                Debug.Log(m_NextPoint);
-                // Debug.Log(GraphicMath.MoveToPoint(tempDelta, m_CurrentPoint, m_NextPoint));
-                if (GraphicMath.MoveToPoint(tempDelta, m_CurrentPoint, m_NextPoint) == m_NextPoint)
+                if (GraphicMath.MoveToPoint(tempDelta, m_CurrentPoint, m_NextPoint, true, false) == m_NextPoint)
                 // && m_NextPoint == m_CurrentPath.GetRoute()[m_CurrentPath.GetRoute().Length - 1])
                 {
                     isCompletePath = true;
@@ -115,7 +127,7 @@ public class PathMgr : MonoBehaviour
                 route = m_CurrentPath.GetLoopRoute();
                 Array.Reverse(route);
                 // Debug.Log(route);
-                Debug.Log("reverse");
+                // Debug.Log("reverse");
             }
             else
             {

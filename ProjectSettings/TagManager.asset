@@ -15,10 +15,10 @@ TagManager:
   - 
   - 
   - background
-  - ground
+  - lower_ground
   - player
   - enemy
-  - 
+  - upper_ground
   - 
   - 
   - 
@@ -42,7 +42,7 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: ground
+  - name: lower_ground
     uniqueID: 4058518617
     locked: 0
   - name: enemy
@@ -50,4 +50,7 @@ TagManager:
     locked: 0
   - name: player
     uniqueID: 295736585
+    locked: 0
+  - name: upper_ground
+    uniqueID: 44706645
     locked: 0
